@@ -200,9 +200,10 @@ var _task = _interopRequireDefault(require("./task-1"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var stringBuilder = new _task.default(".");
-stringBuilder.append("1").prepend().pad("=");
-console.log("stringBuilder", stringBuilder);
+// task - 1
+var bulder = new _task.default(".");
+bulder.append("^").prepend("^").pad("=");
+console.log("stringBuilder", bulder);
 },{"./task-1":"js/task-1/index.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';

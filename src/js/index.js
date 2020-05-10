@@ -1,7 +1,7 @@
 import StringBuilder from "./task-1";
 
-const stringBuilder = new StringBuilder(".");
+// task - 1
+const bulder = new StringBuilder(".");
 
-stringBuilder.append("1").prepend().pad("=");
-
-console.log("stringBuilder", stringBuilder);
+bulder.append("^").prepend("^").pad("=");
+console.log("stringBuilder", bulder);
