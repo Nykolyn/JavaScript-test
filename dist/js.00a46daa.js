@@ -117,9 +117,93 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"js/index.js":[function(require,module,exports) {
+})({"js/task-1/StringBuilder.js":[function(require,module,exports) {
+"use strict";
 
-},{}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var StringBuilder = /*#__PURE__*/function () {
+  function StringBuilder() {
+    var value = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
+
+    _classCallCheck(this, StringBuilder);
+
+    this.baseString = value;
+  }
+
+  _createClass(StringBuilder, [{
+    key: "append",
+    value: function append(str) {
+      if (!str) throw new Error("No value was passed");
+      this.baseString = [].concat(_toConsumableArray(this.baseString), _toConsumableArray(str)).join("");
+      return this;
+    }
+  }, {
+    key: "prepend",
+    value: function prepend(str) {
+      if (!str) throw new Error("No value was passed");
+      this.baseString = [].concat(_toConsumableArray(str), _toConsumableArray(this.baseString)).join("");
+      return this;
+    }
+  }, {
+    key: "pad",
+    value: function pad(str) {
+      if (!str) throw new Error("No value was passed");
+      this.baseString = [].concat(_toConsumableArray(str), _toConsumableArray(this.baseString), _toConsumableArray(str)).join("");
+      return this;
+    }
+  }]);
+
+  return StringBuilder;
+}();
+
+exports.default = StringBuilder;
+},{}],"js/task-1/index.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _StringBuilder = _interopRequireDefault(require("./StringBuilder"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _default = _StringBuilder.default;
+exports.default = _default;
+},{"./StringBuilder":"js/task-1/StringBuilder.js"}],"js/index.js":[function(require,module,exports) {
+"use strict";
+
+var _task = _interopRequireDefault(require("./task-1"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var stringBuilder = new _task.default(".");
+stringBuilder.append("1").prepend().pad("=");
+console.log("stringBuilder", stringBuilder);
+},{"./task-1":"js/task-1/index.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
