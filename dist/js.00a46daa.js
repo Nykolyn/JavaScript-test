@@ -193,10 +193,101 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var _default = _StringBuilder.default;
 exports.default = _default;
-},{"./StringBuilder":"js/task-1/StringBuilder.js"}],"js/index.js":[function(require,module,exports) {
+},{"./StringBuilder":"js/task-1/StringBuilder.js"}],"js/helpers/getRandomRGBColor.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var getRandomRGBColor = function getRandomRGBColor() {
+  var r = Math.floor(Math.random() * 256);
+  var g = Math.floor(Math.random() * 256);
+  var b = Math.floor(Math.random() * 256);
+  var randomColor = "rgb(".concat(r, ", ").concat(g, ", ").concat(b, ")");
+  return randomColor;
+};
+
+var _default = getRandomRGBColor;
+exports.default = _default;
+},{}],"js/task-2/vue.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.handleBoxDestroy = exports.handleBoxDraw = void 0;
+
+var _getRandomRGBColor = _interopRequireDefault(require("../helpers/getRandomRGBColor"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var input = document.querySelector(".js-input");
+var boxWrapper = document.getElementById("boxes");
+
+var boxTemplate = function boxTemplate(_ref) {
+  var _ref$size = _ref.size,
+      size = _ref$size === void 0 ? 30 : _ref$size;
+  return "<div style=\"display:block;width:".concat(size, "px;height:").concat(size, "px;background-color:").concat((0, _getRandomRGBColor.default)(), "\"/>");
+};
+
+var handleBoxDraw = function handleBoxDraw(_ref2) {
+  var _ref2$amount = _ref2.amount,
+      amount = _ref2$amount === void 0 ? 0 : _ref2$amount;
+  var size = 30;
+  if (!amount || Number(amount) < 1) throw new Error("Invalid input value");
+  boxWrapper.innerHTML = "";
+
+  for (var i = 0; i < amount; i++) {
+    boxWrapper.innerHTML += boxTemplate({
+      size: size
+    });
+    size += 10;
+  }
+
+  input.value = "";
+};
+
+exports.handleBoxDraw = handleBoxDraw;
+
+var handleBoxDestroy = function handleBoxDestroy() {
+  boxWrapper.innerHTML = "";
+};
+
+exports.handleBoxDestroy = handleBoxDestroy;
+},{"../helpers/getRandomRGBColor":"js/helpers/getRandomRGBColor.js"}],"js/task-2/events.js":[function(require,module,exports) {
+"use strict";
+
+var _vue = require("./vue");
+
+var input = document.querySelector(".js-input");
+var createBtn = document.querySelector("button[data-action=create]");
+var destroyBtn = document.querySelector("button[data-action=destroy]");
+
+var createBoxes = function createBoxes() {
+  var amount = input.value || 1;
+  (0, _vue.handleBoxDraw)({
+    amount: amount
+  });
+};
+
+var destroyBoxes = function destroyBoxes() {
+  (0, _vue.handleBoxDestroy)();
+};
+
+createBtn.addEventListener("click", createBoxes);
+destroyBtn.addEventListener("click", destroyBoxes);
+},{"./vue":"js/task-2/vue.js"}],"js/task-2/index.js":[function(require,module,exports) {
+"use strict";
+
+require("./events");
+},{"./events":"js/task-2/events.js"}],"js/index.js":[function(require,module,exports) {
 "use strict";
 
 var _task = _interopRequireDefault(require("./task-1"));
+
+require("./task-2");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -204,7 +295,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var bulder = new _task.default(".");
 bulder.append("^").prepend("^").pad("=");
 console.log("stringBuilder", bulder);
-},{"./task-1":"js/task-1/index.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./task-1":"js/task-1/index.js","./task-2":"js/task-2/index.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
