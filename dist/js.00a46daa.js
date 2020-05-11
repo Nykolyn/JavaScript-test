@@ -1206,30 +1206,78 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.fetchNextPage = exports.fetchData = exports.PER_PAGE = void 0;
+
+var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
+
+var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var API_KEY = "12869213-d0e5717d841c234d773fc655d";
 var PER_PAGE = 20;
 exports.PER_PAGE = PER_PAGE;
 var API_URL = "https://pixabay.com/api/?key=".concat(API_KEY, "&per_page=").concat(PER_PAGE);
 
-var fetchData = function fetchData(_ref) {
-  var query = _ref.query;
-  return fetch("".concat(API_URL, "&q=").concat(query)).then(function (response) {
-    return response.json();
-  });
-};
+var fetchData = /*#__PURE__*/function () {
+  var _ref2 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(_ref) {
+    var query, response;
+    return _regenerator.default.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            query = _ref.query;
+            _context.next = 3;
+            return fetch("".concat(API_URL, "&q=").concat(query));
+
+          case 3:
+            response = _context.sent;
+            return _context.abrupt("return", response.json());
+
+          case 5:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+
+  return function fetchData(_x) {
+    return _ref2.apply(this, arguments);
+  };
+}();
 
 exports.fetchData = fetchData;
 
-var fetchNextPage = function fetchNextPage(_ref2) {
-  var page = _ref2.page,
-      query = _ref2.query;
-  return fetch("".concat(API_URL, "&q=").concat(query, "&page=").concat(page)).then(function (response) {
-    return response.json();
-  });
-};
+var fetchNextPage = /*#__PURE__*/function () {
+  var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2(_ref3) {
+    var page, query, response;
+    return _regenerator.default.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            page = _ref3.page, query = _ref3.query;
+            _context2.next = 3;
+            return fetch("".concat(API_URL, "&q=").concat(query, "&page=").concat(page));
+
+          case 3:
+            response = _context2.sent;
+            return _context2.abrupt("return", response.json());
+
+          case 5:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2);
+  }));
+
+  return function fetchNextPage(_x2) {
+    return _ref4.apply(this, arguments);
+  };
+}();
 
 exports.fetchNextPage = fetchNextPage;
-},{}],"js/task-3/vues.js":[function(require,module,exports) {
+},{"@babel/runtime/regenerator":"../node_modules/@babel/runtime/regenerator/index.js","@babel/runtime/helpers/asyncToGenerator":"../node_modules/@babel/runtime/helpers/asyncToGenerator.js"}],"js/task-3/vues.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
