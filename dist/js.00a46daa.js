@@ -1199,7 +1199,211 @@ module.exports = reloadCSS;
         module.hot.dispose(reloadCSS);
         module.hot.accept(reloadCSS);
       
-},{"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"js/task-3/index.js":[function(require,module,exports) {
+},{"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"js/task-3/api.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.fetchNextPage = exports.fetchData = exports.PER_PAGE = void 0;
+var API_KEY = "12869213-d0e5717d841c234d773fc655d";
+var PER_PAGE = 20;
+exports.PER_PAGE = PER_PAGE;
+var API_URL = "https://pixabay.com/api/?key=".concat(API_KEY, "&per_page=").concat(PER_PAGE);
+
+var fetchData = function fetchData(_ref) {
+  var query = _ref.query;
+  return fetch("".concat(API_URL, "&q=").concat(query)).then(function (response) {
+    return response.json();
+  });
+};
+
+exports.fetchData = fetchData;
+
+var fetchNextPage = function fetchNextPage(_ref2) {
+  var page = _ref2.page,
+      query = _ref2.query;
+  return fetch("".concat(API_URL, "&q=").concat(query, "&page=").concat(page)).then(function (response) {
+    return response.json();
+  });
+};
+
+exports.fetchNextPage = fetchNextPage;
+},{}],"js/task-3/vues.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.drawInitialMarkup = exports.galleryItemHTML = exports.galleryListHTML = exports.searchFormHTML = void 0;
+var searchFormHTML = '<form id="search-form" style="margin-bottom:2rem"><input type="text" name="query" autocomplete="off" placeholder="Search images..."/> </form>';
+exports.searchFormHTML = searchFormHTML;
+var galleryListHTML = '<ul class="gallery-list" style="display:flex;flex-wrap:wrap;justify-content:space-around;;list-style-type:none;padding:0;margin:0;"></ul>';
+exports.galleryListHTML = galleryListHTML;
+
+var galleryItemHTML = function galleryItemHTML(_ref) {
+  var webformatURL = _ref.webformatURL,
+      largeImageURL = _ref.largeImageURL,
+      tags = _ref.tags;
+  return "<li style=\"margin-bottom:2rem\">\n    <img style=\"width:400px;height:400px\" src=".concat(webformatURL, " data-source=").concat(largeImageURL, " alt=").concat(tags, "/>\n</li>");
+};
+
+exports.galleryItemHTML = galleryItemHTML;
+
+var drawInitialMarkup = function drawInitialMarkup() {
+  var wrapper = document.querySelector(".task-3");
+  wrapper.style.padding = "2rem";
+  wrapper.insertAdjacentHTML("afterbegin", searchFormHTML);
+  wrapper.insertAdjacentHTML("beforeend", galleryListHTML);
+  wrapper.insertAdjacentHTML("beforeend", '<div id="observer-trigger"/>');
+};
+
+exports.drawInitialMarkup = drawInitialMarkup;
+},{}],"js/task-3/Gallery.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
+
+var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
+
+var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
+
+var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
+var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
+var _api = require("./api");
+
+var _vues = require("./vues");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Gallery = /*#__PURE__*/function () {
+  function Gallery() {
+    (0, _classCallCheck2.default)(this, Gallery);
+    this.query = "";
+    this.photos = [];
+    this.total = this.photos.length;
+    this.page = 1;
+  }
+
+  (0, _createClass2.default)(Gallery, [{
+    key: "fetch",
+    value: function () {
+      var _fetch = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(query) {
+        var _yield$fetchData, hits;
+
+        return _regenerator.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.prev = 0;
+                this.query = query;
+                _context.next = 4;
+                return (0, _api.fetchData)({
+                  query: query
+                });
+
+              case 4:
+                _yield$fetchData = _context.sent;
+                hits = _yield$fetchData.hits;
+                this.photos = hits;
+                this.total = this.photos.length;
+                _context.next = 13;
+                break;
+
+              case 10:
+                _context.prev = 10;
+                _context.t0 = _context["catch"](0);
+                console.error("error while fetching", _context.t0);
+
+              case 13:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this, [[0, 10]]);
+      }));
+
+      function fetch(_x) {
+        return _fetch.apply(this, arguments);
+      }
+
+      return fetch;
+    }()
+  }, {
+    key: "loadMore",
+    value: function () {
+      var _loadMore = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2() {
+        var page, photos, query, _yield$fetchNextPage, hits;
+
+        return _regenerator.default.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.prev = 0;
+                page = this.page, photos = this.photos, query = this.query;
+                this.page += 1;
+                _context2.next = 5;
+                return (0, _api.fetchNextPage)({
+                  query: query,
+                  page: page
+                });
+
+              case 5:
+                _yield$fetchNextPage = _context2.sent;
+                hits = _yield$fetchNextPage.hits;
+                this.photos = [].concat((0, _toConsumableArray2.default)(photos), (0, _toConsumableArray2.default)(hits));
+                this.total = photos.length;
+                _context2.next = 14;
+                break;
+
+              case 11:
+                _context2.prev = 11;
+                _context2.t0 = _context2["catch"](0);
+                console.error("error while loading on scroll", _context2.t0);
+
+              case 14:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this, [[0, 11]]);
+      }));
+
+      function loadMore() {
+        return _loadMore.apply(this, arguments);
+      }
+
+      return loadMore;
+    }()
+  }, {
+    key: "drawPhotos",
+    value: function drawPhotos() {
+      var HTMLMarkup = this.photos.reduce(function (acc, _ref) {
+        var webformatURL = _ref.webformatURL,
+            largeImageURL = _ref.largeImageURL,
+            tags = _ref.tags;
+        return acc + (0, _vues.galleryItemHTML)({
+          webformatURL: webformatURL,
+          largeImageURL: largeImageURL,
+          tags: tags
+        });
+      }, "");
+      return HTMLMarkup;
+    }
+  }]);
+  return Gallery;
+}();
+
+var _default = Gallery;
+exports.default = _default;
+},{"@babel/runtime/helpers/toConsumableArray":"../node_modules/@babel/runtime/helpers/toConsumableArray.js","@babel/runtime/regenerator":"../node_modules/@babel/runtime/regenerator/index.js","@babel/runtime/helpers/asyncToGenerator":"../node_modules/@babel/runtime/helpers/asyncToGenerator.js","@babel/runtime/helpers/classCallCheck":"../node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"../node_modules/@babel/runtime/helpers/createClass.js","./api":"js/task-3/api.js","./vues":"js/task-3/vues.js"}],"js/task-3/index.js":[function(require,module,exports) {
 "use strict";
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
@@ -1210,31 +1414,28 @@ var basicLightbox = _interopRequireWildcard(require("basiclightbox"));
 
 require("basiclightbox/dist/basicLightbox.min.css");
 
+var _Gallery = _interopRequireDefault(require("./Gallery"));
+
+var _api = require("./api");
+
+var _vues = require("./vues");
+
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var API_KEY = "12869213-d0e5717d841c234d773fc655d";
-var API_URL = "https://pixabay.com/api/?key=".concat(API_KEY);
-var total = 0;
-var page = 1;
-var wrapper = document.querySelector(".task-3");
-wrapper.style.padding = "2rem";
-var searchFormHTML = '<form id="search-form" style="margin-bottom:2rem"><input type="text" name="query" autocomplete="off" placeholder="Search images..."/> </form>';
-wrapper.insertAdjacentHTML("afterbegin", searchFormHTML);
-var galleryListHTML = '<ul class="gallery-list" style="display:flex;flex-wrap:wrap;justify-content:space-around;;list-style-type:none;padding:0;margin:0;"></ul>';
-wrapper.insertAdjacentHTML("beforeend", galleryListHTML);
+// had to import css file like this, because plugin looks for dist folder and parcel uses the same folder
+(0, _vues.drawInitialMarkup)();
 var galleryList = document.querySelector(".gallery-list");
-wrapper.insertAdjacentHTML("beforeend", '<div id="observer-trigger"/>');
 var observerTrigger = document.getElementById("observer-trigger");
 var searchInput = document.querySelector("#search-form input");
+var gallery = new _Gallery.default();
 
 var handleSearch = /*#__PURE__*/function () {
   var _ref2 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(_ref) {
-    var value, _yield$fetch$then, hits;
-
+    var value;
     return _regenerator.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -1251,38 +1452,24 @@ var handleSearch = /*#__PURE__*/function () {
           case 3:
             _context.prev = 3;
             _context.next = 6;
-            return fetch("".concat(API_URL, "&q=").concat(value)).then(function (result) {
-              return result.json();
-            });
+            return gallery.fetch(value);
 
           case 6:
-            _yield$fetch$then = _context.sent;
-            hits = _yield$fetch$then.hits;
-            total = hits.length;
-            page = 1;
-            galleryList.innerHTML = hits.reduce(function (acc, _ref3) {
-              var webformatURL = _ref3.webformatURL,
-                  largeImageURL = _ref3.largeImageURL,
-                  tags = _ref3.tags;
-              return (// <a href=${largeImageURL}  target="_blank">
-                acc + "\n                <li style=\"margin-bottom:2rem\">\n                <img style=\"width:400px;height:400px\"        src=".concat(webformatURL, "         data-source=").concat(largeImageURL, "        alt=").concat(tags, "       />     \n                </li>")
-              );
-            }, "" // </a>
-            );
-            _context.next = 16;
+            galleryList.innerHTML = gallery.drawPhotos();
+            _context.next = 12;
             break;
 
-          case 13:
-            _context.prev = 13;
+          case 9:
+            _context.prev = 9;
             _context.t0 = _context["catch"](3);
             console.error("error while fetching data", _context.t0);
 
-          case 16:
+          case 12:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[3, 13]]);
+    }, _callee, null, [[3, 9]]);
   }));
 
   return function handleSearch(_x) {
@@ -1290,78 +1477,60 @@ var handleSearch = /*#__PURE__*/function () {
   };
 }();
 
-searchInput.addEventListener("input", handleSearch);
-var options = {};
-
-var callback = function callback(entries) {
+var observerCallback = function observerCallback(entries) {
   entries.forEach( /*#__PURE__*/function () {
-    var _ref4 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2(entry) {
-      var _yield$fetch$then2, hits;
-
+    var _ref3 = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee2(entry) {
       return _regenerator.default.wrap(function _callee2$(_context2) {
         while (1) {
           switch (_context2.prev = _context2.next) {
             case 0:
-              if (!(entry.intersectionRatio > 0 && total >= 20)) {
-                _context2.next = 14;
+              if (!(entry.intersectionRatio > 0 && gallery.total >= _api.PER_PAGE)) {
+                _context2.next = 10;
                 break;
               }
 
               _context2.prev = 1;
               _context2.next = 4;
-              return fetch("".concat(API_URL, "&q=").concat(searchInput.value, "&page=").concat(page)).then(function (result) {
-                return result.json();
-              });
+              return gallery.loadMore();
 
             case 4:
-              _yield$fetch$then2 = _context2.sent;
-              hits = _yield$fetch$then2.hits;
-              total = hits.length;
-              page += 1;
-              galleryList.innerHTML += hits.reduce(function (acc, _ref5) {
-                var webformatURL = _ref5.webformatURL,
-                    largeImageURL = _ref5.largeImageURL,
-                    tags = _ref5.tags;
-                return (// <a href=${largeImageURL} target="_blank">
-                  acc + "\n                    <li style=\"margin-bottom:2rem\">\n                    <img style=\"width:400px;height:400px\"        src=".concat(webformatURL, "         data-source=").concat(largeImageURL, "        alt=").concat(tags, "       />     \n                    </li>")
-                );
-              }, "" // </a>
-              );
-              _context2.next = 14;
+              galleryList.innerHTML = gallery.drawPhotos();
+              _context2.next = 10;
               break;
 
-            case 11:
-              _context2.prev = 11;
+            case 7:
+              _context2.prev = 7;
               _context2.t0 = _context2["catch"](1);
               console.error("error while fetching data", _context2.t0);
 
-            case 14:
+            case 10:
             case "end":
               return _context2.stop();
           }
         }
-      }, _callee2, null, [[1, 11]]);
+      }, _callee2, null, [[1, 7]]);
     }));
 
     return function (_x2) {
-      return _ref4.apply(this, arguments);
+      return _ref3.apply(this, arguments);
     };
   }());
 };
 
-var observer = new IntersectionObserver(callback, options);
-observer.observe(observerTrigger);
-
-var handleClickImage = function handleClickImage(_ref6) {
-  var target = _ref6.target;
+var handleClickImage = function handleClickImage(_ref4) {
+  var target = _ref4.target;
 
   if (target.nodeName === "IMG") {
-    basicLightbox.create("\n\t\t<img width=\"1400\" height=\"900\" src=".concat(target.dataset.source, ">\n\t")).show();
+    basicLightbox.create("<img width=\"1400\" height=\"900\" src=".concat(target.dataset.source, ">")).show();
   }
 };
 
+var observerOptions = {};
+var observer = new IntersectionObserver(observerCallback, observerOptions);
+observer.observe(observerTrigger);
+searchInput.addEventListener("input", handleSearch);
 galleryList.addEventListener("click", handleClickImage);
-},{"@babel/runtime/regenerator":"../node_modules/@babel/runtime/regenerator/index.js","@babel/runtime/helpers/asyncToGenerator":"../node_modules/@babel/runtime/helpers/asyncToGenerator.js","basiclightbox":"../node_modules/basiclightbox/dist/basicLightbox.min.js","basiclightbox/dist/basicLightbox.min.css":"../node_modules/basiclightbox/dist/basicLightbox.min.css"}],"js/index.js":[function(require,module,exports) {
+},{"@babel/runtime/regenerator":"../node_modules/@babel/runtime/regenerator/index.js","@babel/runtime/helpers/asyncToGenerator":"../node_modules/@babel/runtime/helpers/asyncToGenerator.js","basiclightbox":"../node_modules/basiclightbox/dist/basicLightbox.min.js","basiclightbox/dist/basicLightbox.min.css":"../node_modules/basiclightbox/dist/basicLightbox.min.css","./Gallery":"js/task-3/Gallery.js","./api":"js/task-3/api.js","./vues":"js/task-3/vues.js"}],"js/index.js":[function(require,module,exports) {
 "use strict";
 
 var _task = _interopRequireDefault(require("./task-1"));
@@ -1404,7 +1573,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "9348" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "2269" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
